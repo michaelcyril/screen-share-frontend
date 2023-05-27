@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    'Continue',
+                    'Add',
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
@@ -190,10 +190,8 @@ class _HomeScreenState extends State<HomeScreen> {
       'name': groupNameController.text,
       'description': descriptionController.text,
       'created_by': userData['user']['id'],
-      // 'type': 'driver',
+      'type': 'driver',
     };
-
-    print(data);
 
     var res = await CallApi().authenticatedPostRequest(data, 'create_group');
     if (res == null) {
@@ -474,9 +472,23 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
           child: Column(
         children: [
+          Text(
+            "Created Groups",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(child: my_group_Component()),
+          Text(
+            "Joined Groups",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(child: join_group_Component()),
-          ],
+        ],
       )),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -522,17 +534,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   my_group_Component() {
     if (my_group_data == null) {
+      // print(my_group_data);
+      // print("---------------------");
       return Center(
         child: Text('No Network or Connection...'),
       );
     } else if (my_group_data != null && my_group_data?.length == 0) {
       // No Data
-      return Center(
-        child: Text('No Data or No Group yet...'),
-      );
+      return Text('No Data or No Group yet...');
     } else {
       return ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          // physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: my_group_data!.length,
@@ -546,14 +558,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 160,
                 child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => MyGroupScreen(
-                            my_group_data![index].id,
-                            my_group_data![index].name,
-                            my_group_data![index].code,
-                            my_group_data![index].description,
-                             my_group_data![index].created_at,
-                        )));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MyGroupScreen(
+                                my_group_data![index].id,
+                                my_group_data![index].name,
+                                my_group_data![index].code,
+                                my_group_data![index].description,
+                                my_group_data![index].created_at,
+                              )));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -579,7 +591,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                         color: Colors.grey.withOpacity(0.1),
                                       ),
-                                      child: Image.asset('assets/apply.png'),
+                                      child:
+                                          Image.asset('assets/group_logo.png'),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -588,7 +601,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       my_group_data![index].name,
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.grey,
+                                          color: Color.fromARGB(255, 0, 0, 0),
                                           fontWeight: FontWeight.bold,
                                           overflow: TextOverflow.ellipsis),
                                     ),
@@ -612,8 +625,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 15,
                             ),
                             Text(
-                              my_group_data![index].description,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              'The code to join the group is ${my_group_data![index].code}',
+                              style: TextStyle(fontWeight: FontWeight.normal),
                             ),
                             // SizedBox(height: 15),
                           ],
@@ -625,15 +638,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   join_group_Component() {
+    print("----------------");
+    print(join_group_data!.length);
     if (join_group_data == null) {
       return Center(
         child: Text('No Network or Connection...'),
       );
     } else if (join_group_data != null && join_group_data?.length == 0) {
       // No Data
-      return Center(
-        child: Text('No Data or No Group yet...'),
-      );
+      return Text('No Data or No Group yet...');
     } else {
       return ListView.builder(
           physics: NeverScrollableScrollPhysics(),
@@ -650,14 +663,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 160,
                 child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => MyGroupScreen(
-                            my_group_data![index].id,
-                            my_group_data![index].name,
-                            my_group_data![index].code,
-                            my_group_data![index].description,
-                            my_group_data![index].created_at,
-                        )));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MyGroupScreen(
+                                my_group_data![index].id,
+                                my_group_data![index].name,
+                                my_group_data![index].code,
+                                my_group_data![index].description,
+                                my_group_data![index].created_at,
+                              )));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -683,7 +696,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                         color: Colors.grey.withOpacity(0.1),
                                       ),
-                                      child: Image.asset('assets/apply.png'),
+                                      child:
+                                          Image.asset('assets/group_logo.png'),
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -692,7 +706,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       join_group_data![index].name,
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.grey,
+                                          color: const Color.fromARGB(
+                                              255, 0, 0, 0),
                                           fontWeight: FontWeight.bold,
                                           overflow: TextOverflow.ellipsis),
                                     ),
@@ -716,8 +731,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 15,
                             ),
                             Text(
-                              join_group_data![index].description,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              'The code to join the group is ${my_group_data![index].code}',
+                              style: TextStyle(fontWeight: FontWeight.normal),
                             ),
                             // SizedBox(height: 15),
                           ],

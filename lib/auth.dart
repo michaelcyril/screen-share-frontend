@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:screen_share/api/api.dart';
 import 'package:screen_share/home.dart';
 import 'package:screen_share/utils/constant.dart';
+import 'package:screen_share/utils/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // **************** Login starts here ***************************
@@ -44,16 +45,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
 
 
-                Image.asset('assets/meclogo.png'),
+                Center(
+                  child: Image.asset(
+                    'assets/kimbweta.png',
+                    height: 200,
+                    ),
+                ),
               
                 const Center(
                   child: Text(
-                    'Online Garage System',
+                    'Kimbweta System',
                     style: TextStyle(fontSize: 26, color: Colors.black),
                   ),
                 ),
                 const SizedBox(
-                  height: 70,
+                  height: 30,
                 ),
                 // Spacer(),
                 // Text(
@@ -182,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // );
                   },
                   child: const Text(
-                    'Continue',
+                    'Login',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -368,7 +374,7 @@ class _LoginScreenState extends State<LoginScreen> {
       var body = json.decode(res!.body);
       print(body);
 
-      if (res.statusCode == 200) {
+      if (body['msg'] == 'success') {
         SharedPreferences localStorage = await SharedPreferences.getInstance();
         // localStorage.setString("token", body['token']);
         localStorage.setString("user", json.encode(body));
@@ -382,8 +388,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-      } else if (res.statusCode == 400) {
-        print('hhh');
+      } else if (body['msg'] == 'Fail') {
+        // print('hhh');
+      showSnack(context, body['reason']);
+
         // setState(() {
         //   _isLoading = false;
         //   _not_found = true;
@@ -450,16 +458,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 18,
                 ),
 
-                Image.asset('assets/meclogo.png'),
+                Center(
+                  child: Image.asset(
+                    'assets/kimbweta.png',
+                    height: 200,
+                  ),
+                ),
 
                 const Center(
                   child: Text(
-                    'Online Garage System',
+                    'Kimbweta System',
                     style: TextStyle(fontSize: 26, color: Colors.black),
                   ),
                 ),
                 const SizedBox(
-                  height: 70,
+                  height: 30,
                 ),
                 // Spacer(),
                 // Text(
